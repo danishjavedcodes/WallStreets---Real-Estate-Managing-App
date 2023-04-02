@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="invoice">
+      <h1>Invoices</h1>
+      <h3>Please Enter your Expences and Income Details below</h3>
+      <form action="/invoice" method='POST'>
+        <label for = "income">Income</label>
+        <input type="number" id="income" name="income">
+        <label for = "expences">Expenses</label>
+        <input type="number" id="expences" name="expences">
+        <input style="color: aliceblue; background-color: rgb(0, 0, 0);; padding: 2px; margin: 2px; border-radius: 5px;" type="submit" value="Submit">
+    </form>
+    {% if message1 %}
+    <p>{{message1}}</p> 
+    {% endif %}
+  </div>
+  <div>
+    <br><a style="color: aliceblue; background-color: rgb(0, 0, 0);; padding: 2px; margin: 2px; border-radius: 5px;" href = "{{url_for("PaySal")}}">pay salary to whole staff</a>
+    {% if message %}
+    <p style="color: green;">{{message}}</p> 
+    {% endif %}
+  </div>
+    <br><a style="color: aliceblue; background-color: rgb(0, 0, 0);; padding: 2px; margin: 2px; border-radius: 5px;" href="{{url_for("invoices")}}">Show Invoices</a>
+
+</body>
+</html>

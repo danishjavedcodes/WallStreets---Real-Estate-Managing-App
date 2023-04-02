@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+
+  <div>
+      <div class="sign in">
+      <h1>Sign-in</h1>
+      <form action="/signin" method='POST'>
+        <br><label for = "user_id">user id</label>
+        <br><input type="text" id="user_id" name="user_id">
+        <br><label for = "user_password">Password</label>
+        <br><input type="text" id="user_password" name="user_password">
+        <input type="submit" value="Submit">
+    </form>
+      {% if error %}  
+        <p><strong>Error</strong>: {{error}}</p>  
+      {% endif %}  
+  </div>
+  <a href = "{{url_for("signinadminpg")}}">Sign in admin</a>
+  {% if admins %}
+        <div class="sign in">
+      <h4>Sign-in As Admin</h4>
+      <form action="/signinadmin" method='POST'>
+        <label for = "user_id">user id</label>
+        <br><input type="text" id="user_id" name="user_id">
+        <br><label for = "user_password">Password</label>
+        <br><input type="text" id="user_password" name="user_password">
+        <input type="submit" value="Submit">
+    </form>
+  {% endif %}  
+    <div class="sign up">
+      <h1>Sign-up</h1>
+    <form action="/signupuser" method='POST'>
+      <br><label for = "f_name">F name</label>
+      <br><input type="text" id="f_name" name="f_name">
+      <br><label for = "l_name">L name</label>
+      <br><input type="text" id="l_name" name="l_name">
+      <br><label for = "user_id">user_id</label>
+      <br><input type="text" id="user_id" name="user_id">
+      <br><label for = "user_password">Password</label>
+      <br><input type="text" id="user_password" name="user_password">
+      <br><label for = "e_mail">e_mail</label>
+      <br><input type="text" id="e_mail" name="e_mail">
+      <br><label for = "contact">phone_number (923xxxxxxx)</label>
+      <br><input type="text" id="contact" name="contact">
+      <input type="submit" value="Submit">
+  </form>
+  {% if msg %}
+  <p>{{ msg }}</p>
+  {% endif %}
+  </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div style="flex-wrap: wrap;" class="topnav">
+        <h1>HOD PAGE</h1>
+        {% if u_name %}
+        <p>Welcome {{ u_name }}</p>
+        {% endif %}
+        <a style="color: aliceblue; background-color: rgb(0, 0, 0);; padding: 2px; margin: 2px; border-radius: 5px;" href="{{url_for("add_products")}}">Upload Products</a>
+        <a style="color: aliceblue; background-color: rgb(0, 0, 0);; padding: 2px; margin: 2px; border-radius: 5px;" href="{{url_for("invoice")}}"> Manage Invoices </a>
+        <a style="color: aliceblue; background-color: rgb(0, 0, 0);; padding: 2px; margin: 2px; border-radius: 5px;" href="{{url_for("home")}}">Sign out </a>
+        <a style="color: aliceblue; background-color: rgb(0, 0, 0);; padding: 2px; margin: 2px; border-radius: 5px;" href="{{url_for("add_emp")}}">Add Employees </a>
+
+    </div>
+
+</body>
+</html>

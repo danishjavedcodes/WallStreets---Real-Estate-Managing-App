@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+    <div class="add_products">
+      <h1>Enter Products</h1>
+    <form action="/add_products" method='POST'>
+      <br><label for = "category">category(plot, shop, appartment, home, room, etc)</label>
+      <br><input type="text" id="category" name="category">
+      <br><label for = "price">price</label>
+      <br><input type="text" id="price" name="price">
+      <br><label for = "pro_type">type(sale or rent)</label>
+      <br><input type="text" id="pro_type" name="pro_type">
+      <br><label for = "pro_location">pro_location</label>
+      <br><input type="text" id="pro_location" name="pro_location">
+      <br><label for = "address">address</label>
+      <br><input type="text" id="address" name="address">
+      <br><label for = "p_size">size(square feet)</label>
+      <br><input type="text" id="p_size" name="p_size">
+      <br><label for = "description">other details</label>
+      <br><input type="text" id="description" name="description">
+      <input type="submit" value="Submit">
+  </form>
+    {% if msg %}
+    <p>{{msg}}</p>
+    {% endif %}
+  </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoices</title>
+</head>
+<body>
+     <table>
+        <tr>
+            {% for header in headings %}
+        <th>
+            {{header}}
+        </th>
+        {% endfor %}
+        </tr>
+        {% for row in result %}
+        <tr>
+            {% for cell in row %}
+            <td>{{cell}}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+    <!-- <h1>Enter Data</h1>
+    <form action="/add_invoices" methods='POST'>
+         <br><label for = "branch_code">Branch Code</label>
+        <br><input type="text" id="branch_code" name="branch_code">
+        <br><label for = "income">Income</label>
+        <br><input type="text" id="income" name="income">
+        <br><label for = "expense">Expense</label>
+        <br><input type="text" id="Expense" name="Expense">
+        <br><label for = "upload_date">Date</label>
+        <br><input type="text" id="upload_date" name="upload_date">
+        <input type="submit" value="Submit">\
+    </form> -->
+</body>
+</html>

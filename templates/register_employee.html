@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="/add_emp" method='POST'>
+      <br><label for = "ename">Employee Name</label>
+      <br><input type="text" id="ename" name="ename">
+      <br><label for = "eid">Employee ID</label>
+      <br><input type="text" id="eid" name="eid">
+      <br><label for = "brcode">Branch Code</label>
+      <br><input type="text" id="brcode" name="brcode">
+      <br><label for = "salary">Salary</label>
+      <br><input type="text" id="salary" name="salary">
+      <input type="submit" value="Submit">
+  </form>
+  {% if message %}
+  <p>{{message}}</p>
+  {% endif %}
+</body>
+</html>
