@@ -1,0 +1,40 @@
+{% extends 'admin/layout.html' %}
+{% block page_title %}Properties{% endblock %}
+{% block admin_content %}
+<div class="row g-4">
+  <div class="col-lg-4">
+    <div class="panel-card">
+      <div class="panel-header"><h2>Publish listing</h2></div>
+      <form method="post" novalidate>
+        {{ form.hidden_tag() }}
+        {% for field in [form.category, form.price, form.pro_type, form.pro_location, form.address, form.p_size, form.description] %}
+        <div class="mb-3">
+          {{ field.label(class='form-label') }}
+          {{ field(class='form-control' if field.type != 'SelectField' else 'form-select') }}
+        </div>
+        {% endfor %}
+        {{ form.submit(class='btn btn-ws-gold w-100') }}
+      </form>
+    </div>
+  </div>
+  <div class="col-lg-8">
+    <div class="panel-card">
+      <div class="panel-header"><h2>All listings</h2><span class="badge text-bg-dark">{{ listings|length }}</span></div>
+      <div class="table-responsive">
+        <table class="table ws-table mb-0">
+          <thead><tr><th>ID</th><th>Category</th><th>City</th><th>Type</th><th>Size</th><th>Price</th></tr></thead>
+          <tbody>
+            {% for p in listings %}
+            <tr>
+              <td>{{ p.prod_id }}</td><td>{{ p.catogary }}</td><td>{{ p.pro_location }}</td>
+              <td><span class="badge text-bg-gold">{{ p.pro_type }}</span></td>
+              <td>{{ p.p_size }} sqft</td><td>{{ p.formatted_price }}</td>
+            </tr>
+            {% else %}<tr><td colspan="6" class="text-muted">No listings published.</td></tr>{% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
