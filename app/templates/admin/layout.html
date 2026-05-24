@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block body_class %}admin-body{% endblock %}
+{% block navbar %}{% endblock %}
+
+{% block content %}
+<div class="admin-shell">
+  <aside class="admin-sidebar" id="adminSidebar">
+    <div class="sidebar-brand">
+      <a href="{{ url_for('admin.dashboard') }}"><i class="bi bi-buildings"></i> Wall<span>Streets</span></a>
+    </div>
+    <div class="sidebar-user">
+      <div class="avatar">{{ current_user.f_name[0] }}{{ (current_user.l_name or '')[0:1] }}</div>
+      <div>
+        <strong>{{ current_user.full_name }}</strong>
+        <span class="badge text-bg-gold">{{ current_user.user_type }}</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="{{ url_for('admin.dashboard') }}" class="{% if request.endpoint == 'admin.dashboard' %}active{% endif %}">
+        <i class="bi bi-speedometer2"></i> Dashboard
+      </a>
+      <a href="{{ url_for('admin.properties') }}" class="{% if request.endpoint == 'admin.properties' %}active{% endif %}">
+        <i class="bi bi-house-door"></i> Properties
+      </a>
+      <a href="{{ url_for('admin.invoices') }}" class="{% if request.endpoint == 'admin.invoices' %}active{% endif %}">
+        <i class="bi bi-receipt"></i> Invoices
+      </a>
+      <a href="{{ url_for('admin.employees') }}" class="{% if request.endpoint == 'admin.employees' %}active{% endif %}">
+        <i class="bi bi-people"></i> Employees
+      </a>
+      {% if current_user.is_ceo %}
+      <hr>
+      <a href="{{ url_for('admin.branches') }}" class="{% if request.endpoint == 'admin.branches' %}active{% endif %}">
+        <i class="bi bi-diagram-3"></i> Branches
+      </a>
+      <a href="{{ url_for('admin.hods') }}" class="{% if request.endpoint == 'admin.hods' %}active{% endif %}">
+        <i class="bi bi-person-badge"></i> HOD Management
+      </a>
+      {% endif %}
+    </nav>
+    <div class="sidebar-footer">
+      <a href="{{ url_for('main.index') }}"><i class="bi bi-box-arrow-left"></i> Public Site</a>
+      <a href="{{ url_for('auth.logout') }}"><i class="bi bi-power"></i> Sign Out</a>
+    </div>
+  </aside>
+
+  <div class="admin-main">
+    <header class="admin-topbar">
+      <button class="btn btn-sidebar-toggle d-lg-none" type="button" id="sidebarToggle" aria-label="Toggle menu">
+        <i class="bi bi-list"></i>
+      </button>
+      <div>
+        <p class="topbar-eyebrow">Admin Console</p>
+        <h1 class="topbar-title">{% block page_title %}Dashboard{% endblock %}</h1>
+      </div>
+    </header>
+    <div class="admin-content">
+      {% block admin_content %}{% endblock %}
+    </div>
+  </div>
+</div>
+{% endblock %}

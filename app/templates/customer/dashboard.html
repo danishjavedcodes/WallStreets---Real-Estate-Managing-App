@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}My Dashboard{% endblock %}
+
+{% block content %}
+<section class="section-padding page-hero-small">
+  <div class="container">
+    <span class="eyebrow">Customer Portal</span>
+    <h1>Hello, {{ user.full_name }}</h1>
+    <p class="lead">Discover properties for sale and rent across Pakistan.</p>
+    <a href="{{ url_for('customer.properties') }}" class="btn btn-ws-gold">Browse all listings</a>
+  </div>
+</section>
+<section class="section-padding bg-surface">
+  <div class="container">
+    <h2 class="mb-4">Latest listings</h2>
+    <div class="row g-4">
+      {% for product in properties[:6] %}
+      <div class="col-md-6 col-lg-4">{% include 'components/property_card.html' %}</div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

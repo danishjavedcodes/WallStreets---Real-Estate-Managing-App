@@ -1,0 +1,25 @@
+<footer class="ws-footer">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="ws-brand mb-2"><i class="bi bi-buildings"></i> Wall<span>Streets</span></div>
+        <p class="text-muted-small">Enterprise real estate management for multi-branch agencies.</p>
+      </div>
+      <div class="col-md-4">
+        <h6>Platform</h6>
+        <ul class="list-unstyled footer-links">
+          <li><a href="{{ url_for('auth.login') }}">Sign In</a></li>
+          <li><a href="{{ url_for('auth.register') }}">Register</a></li>
+          <li><a href="{{ url_for('main.about') }}">About</a></li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <h6>Contact</h6>
+        <p class="text-muted-small mb-0"><i class="bi bi-envelope me-2"></i>support@wallstreets.com</p>
+        <p class="text-muted-small"><i class="bi bi-geo-alt me-2"></i>Islamabad · Lahore · Karachi</p>
+      </div>
+    </div>
+    <hr class="border-secondary-subtle my-4">
+    <p class="text-center text-muted-small mb-0">&copy; {{ current_year }} WallStreets. All rights reserved.</p>
+  </div>
+</footer>

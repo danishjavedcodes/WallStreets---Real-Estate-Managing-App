@@ -1,0 +1,45 @@
+{% extends 'admin/layout.html' %}
+{% block page_title %}Invoices{% endblock %}
+{% block admin_content %}
+<div class="row g-4">
+  <div class="col-lg-4">
+    <div class="panel-card mb-4">
+      <div class="panel-header"><h2>Record entry</h2></div>
+      <form method="post">{{ form.hidden_tag() }}
+        <div class="mb-3">{{ form.income.label(class='form-label') }}{{ form.income(class='form-control') }}</div>
+        <div class="mb-3">{{ form.expences.label(class='form-label') }}{{ form.expences(class='form-control') }}</div>
+        {{ form.submit(class='btn btn-ws-gold w-100') }}
+      </form>
+    </div>
+    <div class="panel-card">
+      <div class="panel-header"><h2>Payroll</h2></div>
+      <p class="text-muted-small">Process monthly salary payout for your branch employees.</p>
+      <form method="post" action="{{ url_for('admin.payroll') }}" onsubmit="return confirm('Record salary expense for all branch employees?');">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit" class="btn btn-ws-outline w-100"><i class="bi bi-cash-coin me-2"></i>Run salary payout</button>
+      </form>
+    </div>
+  </div>
+  <div class="col-lg-8">
+    <div class="panel-card">
+      <div class="panel-header"><h2>Invoice ledger</h2></div>
+      <div class="table-responsive">
+        <table class="table ws-table mb-0">
+          <thead><tr><th>Branch</th><th>Date</th><th>Income</th><th>Expenses</th><th>Net</th></tr></thead>
+          <tbody>
+            {% for inv in invoices %}
+            <tr>
+              <td>#{{ inv.branch_code }}</td>
+              <td>{{ inv.upload_date }}</td>
+              <td class="text-success">{{ inv.income|currency }}</td>
+              <td class="text-danger">{{ inv.expences|currency }}</td>
+              <td><strong>{{ inv.net|currency }}</strong></td>
+            </tr>
+            {% else %}<tr><td colspan="5" class="text-muted">No invoices recorded.</td></tr>{% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

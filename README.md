@@ -1,29 +1,32 @@
 # WallStreets — Real Estate Management System (Flask + PostgreSQL)
 
-**WallStreets** is an open-source **real estate property management web application** built with **Python Flask** and **PostgreSQL**. It helps agencies manage **property listings** (plots, houses, shops, malls), **multi-branch operations**, **customer accounts**, **employee payroll**, and **branch invoices** through role-based dashboards for **CEO**, **Head of Department (HOD)**, and **customers**.
+**WallStreets** is an open-source **real estate property management platform** for agencies that operate across multiple branches. Built with **Python Flask**, **SQLAlchemy**, and **PostgreSQL**, it delivers role-based dashboards for **customers**, **CEOs**, and **Heads of Department (HOD)** — with secure auth, modern UI, and tools for listings, invoices, payroll, and branch operations.
 
-> Ideal for learning **full-stack real estate software**, **database-driven admin panels**, and **PostgreSQL stored procedures** in a university or portfolio project.
-
-[![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python&logoColor=white)](https://www.python.org/)
-[![Flask](https://img.shields.io/badge/Flask-Web%20Framework-black?logo=flask)](https://flask.palletsprojects.com/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-336791?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![Python](https://img.shields.io/badge/Python-3.10+-blue?logo=python&logoColor=white)](https://www.python.org/)
+[![Flask](https://img.shields.io/badge/Flask-3.x-black?logo=flask)](https://flask.palletsprojects.com/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16+-336791?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![License](https://img.shields.io/badge/License-Open%20Source-green)]()
+
+**Live demo (local):** run the app and open `http://127.0.0.1:5001`
 
 ---
 
 ## Table of Contents
 
 - [Features](#features)
+- [Screenshots & UI](#screenshots--ui)
 - [Tech Stack](#tech-stack)
-- [Architecture Overview](#architecture-overview)
+- [Architecture](#architecture)
 - [Project Structure](#project-structure)
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
+- [Configuration](#configuration)
 - [Database Setup](#database-setup)
 - [Running the Application](#running-the-application)
-- [User Roles & Workflows](#user-roles--workflows)
-- [API Routes](#api-routes)
-- [Sample Data](#sample-data)
+- [User Roles & Demo Accounts](#user-roles--demo-accounts)
+- [Routes](#routes)
+- [CLI Commands](#cli-commands)
+- [Security](#security)
 - [Contributing](#contributing)
 - [Authors](#authors)
 - [Keywords](#keywords)
@@ -33,29 +36,41 @@
 ## Features
 
 ### Customer portal
-- User **registration** and **sign-in**
-- Browse **property listings** (rent / sale)
-- View products uploaded by branch admins
+- Account **registration** and **sign-in**
+- Browse and **search** property listings (category, type, city)
+- Responsive property cards with rent/sale badges
 
 ### CEO dashboard
-- **Upload properties** — category, price, type (rent/sale), location, address, size, description
-- **Register HOD** (Head of Department) users per branch
-- **Open new branches** (branch code + city)
-- **Manage invoices** — record branch income and expenses
-- **Add employees** and run **salary payout** (`PaySal` procedure)
-- **Delete HOD** accounts (with CEO protection)
+- Organization-wide **analytics** (properties, branches, revenue)
+- **Open branches** and assign cities
+- **Register / remove HOD** accounts
+- Publish **property listings** (plot, house, shop, mall, apartment, commercial)
+- Manage **employees** and run **salary payroll**
+- Record branch **invoices** (income & expenses)
 
 ### HOD dashboard
-- Upload and manage **property listings** for assigned branch
-- **Invoice management** for branch finances
-- **Employee registration** for the branch
+- Branch-scoped **property** management
+- **Employee** roster for assigned branch
+- **Invoice** ledger and **payroll** processing
 
-### Database layer (PostgreSQL)
-- Tables: `branch`, `adminusers`, `customers`, `products`, `employees`, `invoice`, `current_login_user`
-- **PL/pgSQL functions**: `GET_PASS`, `GET_type`, `GET_customers_PASS`, `add_products`, `CHECK_PASS`
-- **Stored procedures**: `add_invoice`, `paysal`, `update_current_user`
-- **Views**: `current_invoice` (branch-scoped invoice view)
-- **Triggers**: `move_del` — backup admin data on HOD deletion
+### Platform highlights
+- Application **factory** pattern with Flask **blueprints**
+- **SQLAlchemy ORM** (parameterized queries, no SQL injection)
+- **Flask-Login** sessions + **Werkzeug** password hashing
+- **Flask-WTF** forms with **CSRF** protection
+- Professional **Bootstrap 5** UI with custom real-estate design system
+- Scroll animations, flash alerts, mobile-friendly admin sidebar
+
+---
+
+## Screenshots & UI
+
+The rebuilt interface includes:
+
+- **Landing page** — hero section, live stats, featured listings
+- **Auth pages** — polished sign-in / registration flows
+- **Customer portal** — filterable property grid
+- **Admin console** — sidebar navigation, stat cards, data tables
 
 ---
 
@@ -63,44 +78,42 @@
 
 | Layer | Technology |
 |--------|------------|
-| Backend | [Flask](https://flask.palletsprojects.com/) (Python) |
+| Backend | [Flask](https://flask.palletsprojects.com/) 3.x |
+| ORM | [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/) / SQLAlchemy |
+| Auth | [Flask-Login](https://flask-login.readthedocs.io/) |
+| Forms | [Flask-WTF](https://flask-wtf.readthedocs.io/) |
 | Database | [PostgreSQL](https://www.postgresql.org/) |
-| DB driver | [psycopg2](https://www.psycopg.org/) |
-| ORM (imported) | Flask-SQLAlchemy |
-| Frontend | HTML5, Jinja2 templates, CSS |
-| Icons | Font Awesome (`public/fonts/`) |
+| Frontend | Bootstrap 5, Bootstrap Icons, custom CSS/JS |
+| Config | python-dotenv |
 
 ---
 
-## Architecture Overview
+## Architecture
 
 ```mermaid
 flowchart TB
-    subgraph clients [Users]
+    subgraph users [Users]
         C[Customer]
-        CEO[CEO Admin]
-        HOD[HOD Admin]
+        CEO[CEO]
+        HOD[HOD]
     end
 
-    subgraph app [Flask Application - main.py]
-        R[Routes & Forms]
-        T[Jinja2 Templates]
+    subgraph flask [Flask App - run.py]
+        BP[Blueprints]
+        SVC[Services Layer]
+        ORM[SQLAlchemy Models]
     end
 
-    subgraph db [PostgreSQL - Wall-Street-Admin]
-        B[branch]
-        A[adminusers]
-        P[products]
-        E[employees]
-        I[invoice]
-        CU[current_login_user]
+    subgraph db [PostgreSQL]
+        T[(Tables)]
     end
 
-    C --> R
-    CEO --> R
-    HOD --> R
-    R --> T
-    R --> db
+    C --> BP
+    CEO --> BP
+    HOD --> BP
+    BP --> SVC
+    SVC --> ORM
+    ORM --> T
 ```
 
 ---
@@ -109,188 +122,192 @@ flowchart TB
 
 ```
 WallStreets---Real-Estate-Managing-App/
-├── main.py                 # Flask app entry point & all routes
-├── adminusrquries.sql      # Full schema, functions, procedures, seed data
-├── sqlquries.sql           # Core admin user table & functions
-├── templates/              # HTML views (Jinja2)
-│   ├── index.html          # Sign-in / sign-up
-│   ├── ceo.html            # CEO dashboard
-│   ├── hod.html            # HOD dashboard
-│   ├── custumer.html       # Customer home
-│   ├── upload_products.html
-│   ├── display_products.html
-│   ├── manage_invoices.html
-│   ├── invoices.html
-│   ├── register_hod.html
-│   ├── register_employee.html
-│   ├── open_branch.html
-│   └── style.css
-├── public/fonts/           # Font Awesome assets
-└── .vscode/                # Editor configuration
+├── app/
+│   ├── __init__.py          # Application factory
+│   ├── config.py            # Environment settings
+│   ├── extensions.py        # db, login_manager, csrf
+│   ├── models.py            # Branch, AdminUser, Customer, Product, ...
+│   ├── forms.py             # WTForms
+│   ├── services.py          # Business logic
+│   ├── decorators.py        # Role-based access
+│   ├── seed.py              # Seed & password migration
+│   ├── blueprints/
+│   │   ├── main/            # Home, about
+│   │   ├── auth/            # Login, register, logout
+│   │   ├── customer/        # Listings portal
+│   │   └── admin/           # CEO & HOD console
+│   ├── templates/           # Jinja2 HTML
+│   └── static/              # CSS, JavaScript
+├── run.py                   # Recommended entry point
+├── main.py                  # Legacy wrapper → run.py
+├── requirements.txt
+├── .env.example
+├── scripts/init_db.sql      # Legacy SQL bootstrap reference
+├── adminusrquries.sql       # Original schema (historical)
+└── README.md
 ```
 
 ---
 
 ## Prerequisites
 
-- **Python 3.8+**
-- **PostgreSQL 12+** installed and running locally
-- `pip` (Python package manager)
-- Git (optional, for cloning)
+- **Python 3.10+**
+- **PostgreSQL 12+** (16 recommended)
+- `pip` and `venv`
+- **Git**
 
 ---
 
 ## Installation
 
-### 1. Clone the repository
-
 ```bash
 git clone https://github.com/danishjavedcodes/WallStreets---Real-Estate-Managing-App.git
 cd WallStreets---Real-Estate-Managing-App
-```
 
-### 2. Create a virtual environment (recommended)
-
-```bash
 python3 -m venv venv
-source venv/bin/activate   # macOS / Linux
-# venv\Scripts\activate    # Windows
+source venv/bin/activate          # Windows: venv\Scripts\activate
+
+pip install -r requirements.txt
 ```
 
-### 3. Install Python dependencies
+---
+
+## Configuration
+
+Copy the example environment file and edit values:
 
 ```bash
-pip install flask flask-sqlalchemy psycopg2-binary
+cp .env.example .env
 ```
+
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `SECRET_KEY` | Flask session secret | Random string |
+| `DATABASE_URL` | PostgreSQL connection URI | `postgresql://postgres:pass@localhost:5432/Wall-Street-Admin` |
+| `PORT` | Server port (5001 avoids macOS AirPlay on 5000) | `5001` |
 
 ---
 
 ## Database Setup
 
-### 1. Create the PostgreSQL database
+### 1. Start PostgreSQL
 
-```sql
-CREATE DATABASE "Wall-Street-Admin";
+```bash
+# macOS (Homebrew)
+brew services start postgresql@16
 ```
 
-### 2. Run SQL scripts
+### 2. Create database
 
-Execute the schema and logic in order:
+```bash
+createdb "Wall-Street-Admin"
+```
 
-1. **`adminusrquries.sql`** — uncomment and run the full schema (tables, functions, procedures, views, triggers, and optional seed data).
-2. **`sqlquries.sql`** — additional admin user definitions if needed.
+### 3. Initialize tables & seed data
 
-> The Flask app connects using the settings in `main.py`. Update credentials for your environment before production use.
-
-### 3. Default connection settings (`main.py`)
-
-| Setting | Default |
-|---------|---------|
-| Database | `Wall-Street-Admin` |
-| User | `postgres` |
-| Password | `sys` |
-| Host | `localhost` |
-| Port | `5432` |
-
-**Security note:** Do not commit real passwords. Use environment variables or a `.env` file (excluded from Git) for production deployments.
+```bash
+export FLASK_APP=run:app
+flask init-db
+flask hash-passwords    # Hash any legacy plain-text passwords
+```
 
 ---
 
 ## Running the Application
 
 ```bash
-python main.py
+source venv/bin/activate
+python run.py
 ```
 
-Open your browser at:
+Open in your browser:
 
-**http://127.0.0.1:5000/**
+**http://127.0.0.1:5001**
 
-- **Customers:** sign up or sign in on the home page  
-- **Admins:** use **Sign in admin** for CEO or HOD access  
-
----
-
-## User Roles & Workflows
-
-| Role | Access |
-|------|--------|
-| **Customer** | Register → Sign in → View property listings |
-| **CEO** | Full control: branches, HODs, products, employees, invoices, payroll |
-| **HOD** | Branch-level: products, invoices, employees |
-
-### Typical CEO workflow
-1. Open a **new branch** (city + branch code).
-2. **Register HOD** for that branch.
-3. **Add employees** with salary and branch assignment.
-4. **Upload properties** (plot, house, shop, mall — rent or sale).
-5. Record **invoices** and process **salary payments**.
+> **Note:** On macOS, port **5000** is often used by **AirPlay Receiver**. This project defaults to **5001** via the `PORT` environment variable.
 
 ---
 
-## API Routes
+## User Roles & Demo Accounts
 
-| Route | Method | Description |
-|-------|--------|-------------|
-| `/` | GET, POST | Home — customer sign-in / sign-up |
-| `/signupuser` | POST | Customer registration |
-| `/signin` | POST | Customer login |
-| `/signinadmin` | POST | Admin login (CEO / HOD) |
-| `/registerHOD` | GET | HOD registration page |
-| `/signup_hod` | POST | Create HOD user |
-| `/open_branch` | POST | Create new branch |
-| `/add_products` | POST | Add property listing |
-| `/display_products` | GET | List all properties |
-| `/invoice` | POST | Add branch invoice |
-| `/PaySal` | GET | Pay salaries via stored procedure |
-| `/add_emp` | POST | Add employee |
-| `/delete_hod` | POST | Remove HOD (CEO protected) |
-| `/invoices` | GET | View current branch invoices |
+| Role | User ID | Password | Access |
+|------|---------|----------|--------|
+| **CEO** | `1` | `ceo123` | Full admin console |
+| **HOD** | `2` | `hod123` | Branch-scoped admin |
+| **Customer** | `1` | `12347` | Property search & browse |
+
+Sign in at **/auth/login** — admins and customers use the same page; the app routes you by role.
 
 ---
 
-## Sample Data
+## Routes
 
-The repository includes commented **seed data** in `adminusrquries.sql` for Pakistani cities (Islamabad, Lahore, Karachi, Kharian), for example:
+| Route | Description |
+|-------|-------------|
+| `/` | Landing page with featured listings |
+| `/about` | About the platform |
+| `/auth/login` | Sign in (customer or admin) |
+| `/auth/register` | Customer registration |
+| `/auth/logout` | Sign out |
+| `/customer/dashboard` | Customer home |
+| `/customer/properties` | Searchable property listings |
+| `/admin/dashboard` | CEO / HOD analytics |
+| `/admin/properties` | Manage listings |
+| `/admin/branches` | Open branches (CEO only) |
+| `/admin/hods` | HOD management (CEO only) |
+| `/admin/employees` | Employee roster |
+| `/admin/invoices` | Invoices & payroll |
 
-- Shops, plots, houses, and malls for **rent** and **sale**
-- Sample **customers**, **employees**, and **invoices**
+---
 
-Uncomment the `INSERT` blocks in `adminusrquries.sql` to load demo data for testing.
+## CLI Commands
+
+```bash
+export FLASK_APP=run:app
+
+flask init-db           # Create tables + seed demo data
+flask hash-passwords    # Migrate plain-text passwords to hashes
+```
+
+---
+
+## Security
+
+- Passwords stored with **Werkzeug** hashing (`pbkdf2` / `scrypt`)
+- **CSRF** tokens on all POST forms
+- **Role decorators** restrict CEO-only routes
+- Database access via **SQLAlchemy** (no string-built SQL)
+- Never commit `.env` — use `.env.example` as a template
 
 ---
 
 ## Contributing
 
-Contributions are welcome.
-
-1. Fork the repository  
-2. Create a feature branch: `git checkout -b feature/your-feature`  
-3. Commit your changes with a clear message  
-4. Push and open a Pull Request  
-
-Please keep SQL migrations documented and avoid committing database passwords.
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/your-feature`
+3. Commit with a clear message
+4. Push and open a Pull Request
 
 ---
 
 ## Authors
 
-This project was developed as a collaborative **real estate management system** coursework / team effort, including contributions from:
+Originally developed as a collaborative university / team project. Rebuilt with a professional Flask architecture including:
 
-- **Danish Javed** — schema, customer auth, products, invoices, current user session  
-- **Ali** — products table design  
-- **Shurahbeel** — backup triggers, employee payroll procedures  
+- **Danish Javed** — schema, auth, products, invoices
+- **Ali** — products table design
+- **Shurahbeel** — backup triggers, payroll procedures
 
-Maintainer repository: [danishjavedcodes/WallStreets---Real-Estate-Managing-App](https://github.com/danishjavedcodes/WallStreets---Real-Estate-Managing-App)
+**Repository:** [danishjavedcodes/WallStreets---Real-Estate-Managing-App](https://github.com/danishjavedcodes/WallStreets---Real-Estate-Managing-App)
 
 ---
 
 ## Keywords
 
-`real estate management system` · `property management software` · `Flask real estate app` · `PostgreSQL property database` · `real estate admin panel` · `branch management system` · `property listing CRUD` · `invoice management` · `employee payroll` · `CEO HOD dashboard` · `open source real estate` · `Python web app` · `Wall Streets real estate`
+`real estate management system` · `property management software` · `Flask real estate app` · `PostgreSQL property database` · `real estate admin panel` · `multi-branch property management` · `CEO HOD dashboard` · `property listing CRUD` · `invoice management` · `employee payroll` · `Python web application` · `WallStreets` · `open source real estate`
 
 ---
 
 ## Star this repo
 
-If this project helped you learn **Flask**, **PostgreSQL**, or **real estate web development**, consider giving it a ⭐ on GitHub.
+If this project helped you learn **Flask**, **PostgreSQL**, or **real estate web development**, consider giving it a star on GitHub.
