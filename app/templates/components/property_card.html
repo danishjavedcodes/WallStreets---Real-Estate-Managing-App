@@ -1,0 +1,13 @@
+<div class="property-card h-100" data-reveal>
+  <div class="property-card-badge">{{ product.pro_type }}</div>
+  <div class="property-card-body">
+    <span class="property-category">{{ product.catogary }}</span>
+    <h3 class="property-title">{{ product.pro_location }}</h3>
+    <p class="property-address"><i class="bi bi-geo-alt"></i> {{ product.address }}</p>
+    <p class="property-desc">{{ product.description or 'No description provided.' }}</p>
+    <div class="property-meta">
+      <span><i class="bi bi-aspect-ratio"></i> {{ product.p_size }} sq ft</span>
+      <span class="property-price">{{ product.formatted_price }}</span>
+    </div>
+  </div>
+</div>

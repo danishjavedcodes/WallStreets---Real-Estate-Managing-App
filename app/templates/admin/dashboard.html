@@ -1,0 +1,49 @@
+{% extends 'admin/layout.html' %}
+{% block page_title %}Dashboard{% endblock %}
+{% block admin_content %}
+<div class="row g-4 mb-4">
+  <div class="col-md-6 col-xl-3">{% with icon='house-door', label='Properties', value=stats.properties %}{% include 'components/stat_card.html' %}{% endwith %}</div>
+  <div class="col-md-6 col-xl-3">{% with icon='diagram-3', label='Branches', value=stats.branches %}{% include 'components/stat_card.html' %}{% endwith %}</div>
+  <div class="col-md-6 col-xl-3">{% with icon='people', label='Employees', value=stats.employees %}{% include 'components/stat_card.html' %}{% endwith %}</div>
+  <div class="col-md-6 col-xl-3">{% with icon='person-check', label='Customers', value=stats.customers %}{% include 'components/stat_card.html' %}{% endwith %}</div>
+</div>
+
+<div class="row g-4 mb-4">
+  <div class="col-md-4">{% with icon='arrow-down-circle', label='Total Income', value=stats.total_income|currency, prefix='' %}{% include 'components/stat_card.html' %}{% endwith %}</div>
+  <div class="col-md-4">{% with icon='arrow-up-circle', label='Total Expenses', value=stats.total_expenses|currency %}{% include 'components/stat_card.html' %}{% endwith %}</div>
+  <div class="col-md-4">{% with icon='cash-stack', label='Net Revenue', value=stats.net_revenue|currency %}{% include 'components/stat_card.html' %}{% endwith %}</div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-7">
+    <div class="panel-card">
+      <div class="panel-header"><h2>Recent properties</h2></div>
+      <div class="table-responsive">
+        <table class="table ws-table mb-0">
+          <thead><tr><th>ID</th><th>Category</th><th>City</th><th>Type</th><th>Price</th></tr></thead>
+          <tbody>
+            {% for p in recent_properties %}
+            <tr><td>{{ p.prod_id }}</td><td>{{ p.catogary }}</td><td>{{ p.pro_location }}</td><td>{{ p.pro_type }}</td><td>{{ p.formatted_price }}</td></tr>
+            {% else %}<tr><td colspan="5" class="text-muted">No properties yet.</td></tr>{% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <div class="panel-card">
+      <div class="panel-header"><h2>Recent invoices</h2></div>
+      <ul class="list-group list-group-flush">
+        {% for inv in recent_invoices %}
+        <li class="list-group-item d-flex justify-content-between">
+          <span>Branch #{{ inv.branch_code }} · {{ inv.upload_date }}</span>
+          <strong class="text-success">+{{ inv.income|currency }}</strong>
+        </li>
+        {% else %}
+        <li class="list-group-item text-muted">No invoice records.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}

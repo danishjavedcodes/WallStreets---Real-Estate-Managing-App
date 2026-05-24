@@ -1,0 +1,31 @@
+<nav class="navbar navbar-expand-lg ws-navbar fixed-top">
+  <div class="container">
+    <a class="navbar-brand ws-brand" href="{{ url_for('main.index') }}">
+      <i class="bi bi-buildings"></i> Wall<span>Streets</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('main.about') }}">About</a></li>
+        {% if current_user.is_authenticated %}
+          {% if current_user.get_id().startswith('admin:') %}
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
+          {% else %}
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('customer.properties') }}">Listings</a></li>
+          {% endif %}
+          <li class="nav-item">
+            <a class="btn btn-ws-outline btn-sm ms-lg-2" href="{{ url_for('auth.logout') }}">Sign Out</a>
+          </li>
+        {% else %}
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.login') }}">Sign In</a></li>
+          <li class="nav-item">
+            <a class="btn btn-ws-gold btn-sm ms-lg-2" href="{{ url_for('auth.register') }}">Get Started</a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
