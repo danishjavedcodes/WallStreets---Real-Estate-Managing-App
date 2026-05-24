@@ -1,0 +1,31 @@
+{% extends 'admin/layout.html' %}
+{% block page_title %}Branches{% endblock %}
+{% block admin_content %}
+<div class="row g-4">
+  <div class="col-lg-4">
+    <div class="panel-card">
+      <div class="panel-header"><h2>Open new branch</h2></div>
+      <form method="post">{{ form.hidden_tag() }}
+        <div class="mb-3">{{ form.branch_code.label(class='form-label') }}{{ form.branch_code(class='form-control') }}</div>
+        <div class="mb-3">{{ form.city.label(class='form-label') }}{{ form.city(class='form-control') }}</div>
+        {{ form.submit(class='btn btn-ws-gold w-100') }}
+      </form>
+    </div>
+  </div>
+  <div class="col-lg-8">
+    <div class="panel-card">
+      <div class="panel-header"><h2>Active branches</h2></div>
+      <div class="row g-3">
+        {% for branch in branches %}
+        <div class="col-md-6">
+          <div class="branch-card">
+            <i class="bi bi-geo-alt-fill"></i>
+            <div><h3>{{ branch.city }}</h3><p>Branch code #{{ branch.branch_code }}</p></div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
