@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Property Listings{% endblock %}
+
+{% block content %}
+<section class="section-padding">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-3">
+        <div class="filter-panel sticky-lg-top">
+          <h2 class="h5 mb-3">Filter listings</h2>
+          <form method="get">
+            <div class="mb-3">{{ form.q.label(class='form-label') }}{{ form.q(class='form-control', placeholder='Search...') }}</div>
+            <div class="mb-3">{{ form.category.label(class='form-label') }}{{ form.category(class='form-select') }}</div>
+            <div class="mb-3">{{ form.pro_type.label(class='form-label') }}{{ form.pro_type(class='form-select') }}</div>
+            <div class="mb-3">{{ form.city.label(class='form-label') }}{{ form.city(class='form-control', placeholder='e.g. Lahore') }}</div>
+            {{ form.submit(class='btn btn-ws-gold w-100') }}
+          </form>
+        </div>
+      </div>
+      <div class="col-lg-9">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h1 class="h3 mb-0">Available properties</h1>
+          <span class="badge text-bg-dark">{{ properties|length }} results</span>
+        </div>
+        <div class="row g-4">
+          {% for product in properties %}
+          <div class="col-md-6 col-xl-4" data-reveal>{% include 'components/property_card.html' %}</div>
+          {% else %}
+          <div class="col-12"><div class="empty-state">No properties match your filters.</div></div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
