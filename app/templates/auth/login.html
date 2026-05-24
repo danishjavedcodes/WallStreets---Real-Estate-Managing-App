@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Sign In{% endblock %}
+{% block main_class %}site-main auth-main{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-5" data-reveal>
+      <div class="auth-card">
+        <h1>Welcome back</h1>
+        <p class="text-muted">Sign in as a customer or admin (CEO / HOD).</p>
+        <form method="post" novalidate>
+          {{ form.hidden_tag() }}
+          <div class="mb-3">
+            {{ form.user_id.label(class='form-label') }}
+            {{ form.user_id(class='form-control form-control-lg' + (' is-invalid' if form.user_id.errors else '')) }}
+            {% for error in form.user_id.errors %}<div class="invalid-feedback">{{ error }}</div>{% endfor %}
+          </div>
+          <div class="mb-4">
+            {{ form.password.label(class='form-label') }}
+            {{ form.password(class='form-control form-control-lg' + (' is-invalid' if form.password.errors else '')) }}
+            {% for error in form.password.errors %}<div class="invalid-feedback">{{ error }}</div>{% endfor %}
+          </div>
+          {{ form.submit(class='btn btn-ws-gold w-100 btn-lg') }}
+        </form>
+        <p class="mt-4 mb-0 text-center text-muted-small">
+          New here? <a href="{{ url_for('auth.register') }}">Create an account</a>
+        </p>
+        <div class="demo-credentials mt-4">
+          <p class="mb-1"><strong>Demo CEO:</strong> ID <code>1</code> / <code>ceo123</code></p>
+          <p class="mb-1"><strong>Demo HOD:</strong> ID <code>2</code> / <code>hod123</code></p>
+          <p class="mb-0"><strong>Demo Customer:</strong> ID <code>1</code> / <code>12347</code></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
