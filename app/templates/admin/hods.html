@@ -1,0 +1,43 @@
+{% extends 'admin/layout.html' %}
+{% block page_title %}HOD Management{% endblock %}
+{% block admin_content %}
+<div class="row g-4">
+  <div class="col-lg-5">
+    <div class="panel-card mb-4">
+      <div class="panel-header"><h2>Register HOD</h2></div>
+      <form method="post">
+        <input type="hidden" name="form_type" value="register">
+        {{ hod_form.hidden_tag() }}
+        {% for field in [hod_form.f_name, hod_form.l_name, hod_form.user_id, hod_form.email, hod_form.phone_number, hod_form.branch_code, hod_form.password] %}
+        <div class="mb-3">{{ field.label(class='form-label') }}{{ field(class='form-control' if field.type != 'SelectField' else 'form-select') }}</div>
+        {% endfor %}
+        {{ hod_form.submit(class='btn btn-ws-gold w-100') }}
+      </form>
+    </div>
+    <div class="panel-card">
+      <div class="panel-header"><h2>Remove HOD</h2></div>
+      <form method="post" onsubmit="return confirm('Remove this HOD account?');">
+        <input type="hidden" name="form_type" value="delete">
+        {{ delete_form.hidden_tag() }}
+        <div class="mb-3">{{ delete_form.user_id.label(class='form-label') }}{{ delete_form.user_id(class='form-control') }}</div>
+        {{ delete_form.submit(class='btn btn-outline-danger w-100') }}
+      </form>
+    </div>
+  </div>
+  <div class="col-lg-7">
+    <div class="panel-card">
+      <div class="panel-header"><h2>Heads of Department</h2></div>
+      <div class="table-responsive">
+        <table class="table ws-table mb-0">
+          <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Branch</th></tr></thead>
+          <tbody>
+            {% for hod in hods %}
+            <tr><td>{{ hod.user_id }}</td><td>{{ hod.full_name }}</td><td>{{ hod.e_mail }}</td><td>#{{ hod.branch_code }}</td></tr>
+            {% else %}<tr><td colspan="4" class="text-muted">No HODs registered.</td></tr>{% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
