@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+{% block body_class %}landing-page{% endblock %}
+
+{% block content %}
+<section class="hero-section">
+  <div class="hero-overlay"></div>
+  <div class="container position-relative">
+    <div class="row align-items-center min-vh-100 py-5">
+      <div class="col-lg-7 hero-copy" data-reveal>
+        <span class="hero-badge">Real Estate Management Platform</span>
+        <h1>Manage properties, branches &amp; teams in one place</h1>
+        <p class="lead">WallStreets gives agencies a modern command center for listings, invoices, payroll, and multi-branch operations — built for CEOs, HODs, and customers.</p>
+        <div class="d-flex flex-wrap gap-3 mt-4">
+          <a href="{{ url_for('auth.register') }}" class="btn btn-ws-gold btn-lg">Create Account</a>
+          <a href="{{ url_for('auth.login') }}" class="btn btn-ws-outline btn-lg">Sign In</a>
+        </div>
+      </div>
+      <div class="col-lg-5 mt-5 mt-lg-0" data-reveal>
+        <div class="hero-stats-card">
+          <div class="row g-3 text-center">
+            <div class="col-6">
+              <div class="stat-pill"><span class="stat-value" data-count="{{ stats.properties }}">0</span><span class="stat-label">Listings</span></div>
+            </div>
+            <div class="col-6">
+              <div class="stat-pill"><span class="stat-value" data-count="{{ stats.branches }}">0</span><span class="stat-label">Branches</span></div>
+            </div>
+            <div class="col-6">
+              <div class="stat-pill"><span class="stat-value" data-count="{{ stats.employees }}">0</span><span class="stat-label">Employees</span></div>
+            </div>
+            <div class="col-6">
+              <div class="stat-pill"><span class="stat-value" data-count="{{ stats.customers }}">0</span><span class="stat-label">Customers</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-padding bg-surface">
+  <div class="container">
+    <div class="section-heading text-center mb-5" data-reveal>
+      <span class="eyebrow">Featured Listings</span>
+      <h2>Explore premium properties</h2>
+    </div>
+    <div class="row g-4">
+      {% for product in featured %}
+      <div class="col-md-6 col-lg-4" data-reveal>
+        {% include 'components/property_card.html' %}
+      </div>
+      {% else %}
+      <div class="col-12 text-center text-muted">No listings yet. Admin users can publish properties.</div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section-padding">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-4" data-reveal>
+        <div class="feature-card">
+          <i class="bi bi-shield-check"></i>
+          <h3>Role-based access</h3>
+          <p>Separate experiences for CEO, HOD, and customers with secure authentication.</p>
+        </div>
+      </div>
+      <div class="col-md-4" data-reveal>
+        <div class="feature-card">
+          <i class="bi bi-graph-up-arrow"></i>
+          <h3>Financial control</h3>
+          <p>Track branch income, expenses, and automated salary payouts from one dashboard.</p>
+        </div>
+      </div>
+      <div class="col-md-4" data-reveal>
+        <div class="feature-card">
+          <i class="bi bi-building"></i>
+          <h3>Multi-branch ops</h3>
+          <p>Open branches, assign HODs, and manage employees across cities seamlessly.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
